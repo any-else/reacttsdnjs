@@ -1,0 +1,11 @@
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+}
+.actions {
+  display: flex;
+}
+
+.complete {
+  text-decoration: line-through;
+}
