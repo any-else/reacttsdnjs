@@ -1,56 +1,65 @@
 import React from "react";
 import "./Todo.css";
 import TodoForm from "../../components/TodoForm/TodoForm";
-import { ITodoList } from "../../types/type";
 import TodoItem from "../../components/TodoItem/TodoItem";
+import { ITodoList } from "../../models/todo";
+import { TodoAPI } from "../../api/todo";
+import { useDispatch } from "react-redux";
+import { getTodo } from "../../redux/slices/todoSlice";
 
 const Todo: React.FC = () => {
-  const todoList: ITodoList[] = [
-    {
-      id: 1,
-      name: "Uong Tra Sua cua Thay Dong",
-      completed: false,
-    },
-    {
-      id: 2,
-      name: "uong nuoc mia cua Hieu",
-      completed: false,
-    },
-    {
-      id: 3,
-      name: "2 macbook kia dep qua ma chua dai lop cai gi",
-      completed: true,
-    },
-  ];
-  const [todo, setTodo] = React.useState<Array<ITodoList>>(todoList);
-  console.log(setTodo);
+  //CALL API
+  //1 luu tai component nay
+  const [todoApi, setTodoApi] = React.useState<Array<ITodoList>>([]);
+  const [isCall, setIsCall] = React.useState<boolean>(true);
+  //2 lưu lên trên thằng redux
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    //ham de call
+    const handleCallTodo = async () => {
+      const data: ITodoList[] = await TodoAPI.getAllTodo();
+
+      console.log("data", data);
+      dispatch(getTodo(data));
+      setTodoApi(data);
+    };
+
+    if (isCall) {
+      handleCallTodo();
+    }
+    return () => {
+      setIsCall(false);
+    };
+  }, [isCall]);
+
   const handleAddTodo = (data: ITodoList): void => {
-    setTodo([...todo, data]);
+    setTodoApi([...todoApi, data]);
   };
   const handleDeleteParent = (id: number) => {
-    setTodo(todo.filter((item) => item.id !== id));
+    setTodoApi(todoApi.filter((item) => item.id !== id));
   };
   const handleUpdate = (id: number) => {
-    const newData = todo.map((item) => {
+    const newData = todoApi.map((item) => {
       if (item.id == id) {
         return { ...item, completed: !item.completed };
       } else {
         return item;
       }
     });
-    setTodo([...newData]);
+    setTodoApi([...newData]);
   };
   const handleUpdateDataName = (id: number, name: string) => {
-    const newData = todo.map((item) => {
+    const newData = todoApi.map((item) => {
       if (item.id == id) {
         return { ...item, name };
       } else {
         return item;
       }
     });
-    setTodo([...newData]);
+    setTodoApi([...newData]);
   };
-  console.log(1111, todo);
+
   return (
     <div className="todo-app">
       <h2>Todo List</h2>
@@ -59,7 +68,7 @@ const Todo: React.FC = () => {
           <TodoForm handleAddTodo={handleAddTodo} />
           <TodoItem
             handleUpdateDataName={handleUpdateDataName}
-            dataTodo={todo}
+            dataTodo={todoApi}
             handleUpdate={handleUpdate}
             handleDeleteParent={handleDeleteParent}
           />

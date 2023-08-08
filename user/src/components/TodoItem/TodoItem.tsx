@@ -38,7 +38,7 @@ const TodoItem: React.FC<IPropsTodo> = (props: IPropsTodo) => {
                 readOnly={item.id == id ? false : true}
                 className={item.completed ? "complete" : ""}
                 type="text"
-                value={item.name}
+                value={item.title}
               />
               <div className="actions">
                 <button onClick={() => handleEditData(item.id)}>Edit</button>
