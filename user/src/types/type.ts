@@ -1,8 +1,4 @@
-export interface ITodoList {
-  id: number;
-  name: string;
-  completed: boolean;
-}
+import { ITodoList } from "../models/todo";
 
 export interface IPropsTodo {
   dataTodo: ITodoList[];

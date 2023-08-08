@@ -10,7 +10,7 @@ const TodoForm: React.FC<IPropsTodoForm> = (props: IPropsTodoForm) => {
   const handleAddTodoList = () => {
     props.handleAddTodo({
       id: Date.now(),
-      name,
+      title: name,
       completed: false,
     });
     setName("");
