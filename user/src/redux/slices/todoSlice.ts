@@ -1,16 +1,36 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ITodoList } from "../../models/todo";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ITodoList, TodoAPI } from "../../models/todo";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getAllTodo = createAsyncThunk<ITodoList[]>(
+  "todo/getAllTodo",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async () => {
+    const data = await TodoAPI.getAllTodo();
+    console.log("data todo", data);
+    return data;
+  }
+);
 
 const todoSlice = createSlice({
   name: "TodoSlice",
-  initialState: {
-    todoList: [],
-  },
+  initialState: [],
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getTodo: (state: any, action: PayloadAction<ITodoList[]>): void => {
-      state.todoList.push(action.payload);
+      state.push(action.payload);
       return state;
+    },
+  },
+  extraReducers: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [getAllTodo.fulfilled as any]: (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      state: any[],
+      action: PayloadAction<ITodoList[]>
+    ) => {
+      console.log("aaaa", action.payload);
+      state.push(action.payload);
     },
   },
 });

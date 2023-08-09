@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-//instance
+//instance => đối tượng
 const axiosClient = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com/",
   headers: {

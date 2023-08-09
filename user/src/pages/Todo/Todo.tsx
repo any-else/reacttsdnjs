@@ -2,10 +2,12 @@ import React from "react";
 import "./Todo.css";
 import TodoForm from "../../components/TodoForm/TodoForm";
 import TodoItem from "../../components/TodoItem/TodoItem";
-import { ITodoList } from "../../models/todo";
-import { TodoAPI } from "../../api/todo";
+import { ITodoList, TodoAPI } from "../../models/todo";
+
 import { useDispatch } from "react-redux";
-import { getTodo } from "../../redux/slices/todoSlice";
+import { getAllTodo } from "../../redux/slices/todoSlice";
+import { RootState } from "../../redux/store/store";
+import { useSelector } from "react-redux";
 
 const Todo: React.FC = () => {
   //CALL API
@@ -19,9 +21,8 @@ const Todo: React.FC = () => {
     //ham de call
     const handleCallTodo = async () => {
       const data: ITodoList[] = await TodoAPI.getAllTodo();
-
-      console.log("data", data);
-      dispatch(getTodo(data));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await dispatch(getAllTodo() as any).unwrap();
       setTodoApi(data);
     };
 
@@ -33,6 +34,8 @@ const Todo: React.FC = () => {
     };
   }, [isCall]);
 
+  const todoSelector = useSelector((state: RootState) => state.todoReducer);
+  console.log("todo Selector", todoSelector);
   const handleAddTodo = (data: ITodoList): void => {
     setTodoApi([...todoApi, data]);
   };

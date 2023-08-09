@@ -11,7 +11,7 @@ const Router: React.FC = () => {
     <Routes>
       {/* Authentication */}
       <Route path="/auth" element={<Auth />}>
-        <Route path="login" index element={<Login />} />
+        <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
       {/* User */}
